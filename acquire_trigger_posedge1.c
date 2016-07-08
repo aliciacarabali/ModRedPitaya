@@ -1,5 +1,8 @@
 /* Red Pitaya C API example Acquiring a signal from a buffer  
  * This application acquires a signal on a specific channel */
+ 
+ /* Modificado por Alicia Carabali para guardar los datos en un archico de texto llamado text.1 con hora
+ de inicio y finalización de la adquicisión*/
 
 #include <stdio.h>
 #include <stdlib.h>
