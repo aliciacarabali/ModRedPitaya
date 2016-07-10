@@ -2,7 +2,7 @@
  * This application acquires a signal on a specific channel */
  
  /* Modificado por Alicia Carabali para guardar los datos en un archico de texto llamado text.1 con hora
- de inicio y finalización de la adquicisión*/
+ de inicio y finalización de la adquicisión, el nombre es el del momento de adq*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,20 +17,12 @@ int main(int argc, char **argv){
                 fprintf(stderr, "Rp api init failed!\n");
         }
 
-        /*LOOB BACK FROM OUTPUT 2 - ONLY FOR TESTING*/
-        rp_GenReset();
-        rp_GenFreq(RP_CH_1, 20000.0);
-        rp_GenAmp(RP_CH_1, 1.0);
-        rp_GenWaveform(RP_CH_1, RP_WAVEFORM_SINE);
-        rp_GenOutEnable(RP_CH_1);
-
-
         uint32_t buff_size = 16384;
         float *buff = (float *)malloc(buff_size * sizeof(float));
 
         rp_AcqReset();
         rp_AcqSetDecimation(1);
-        rp_AcqSetTriggerLevel(0.1); //Trig level is set in Volts while in SCPI 
+        rp_AcqSetTriggerLevel(-0.1); //Trig level is set in Volts while in SCPI 
         rp_AcqSetTriggerDelay(0);
 
         rp_AcqStart();
@@ -52,18 +44,18 @@ int main(int argc, char **argv){
                 
         rp_AcqGetOldestDataV(RP_CH_1, &buff_size, buff);
         int i;
-	FILE *fp;
 
 	time_t t;
 	struct tm * timeinfo;
-	
-	// char* str = "string";
-        fp=fopen("test1.txt","w");
-	//if(fp == NULL){
-	  //exit(-1);
-	//}
+	//char buffy1 [20];
+
 	time(&t);
         timeinfo=localtime(&t);
+	char s [30];
+	strftime(s,30,"%c",timeinfo);
+	FILE *fp;
+        fp=fopen(s,"w");
+	
 
 	fprintf(fp,"INICIO: %s", asctime(timeinfo)); 
 
@@ -84,4 +76,3 @@ int main(int argc, char **argv){
 }
 
         }
-        
